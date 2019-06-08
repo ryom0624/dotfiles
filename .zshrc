@@ -133,8 +133,8 @@ export LESS='-R'
 ###############################################
 
 alias ls='ls -FG'
-alias la='ls -laFG'
-alias ll='ls -lFG'
+alias la='ls -lahFG'
+alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
 

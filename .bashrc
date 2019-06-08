@@ -1,5 +1,5 @@
-alias la='ls -laFG'
-alias ll='ls -laFG'
+alias la='ls -lahFG'
+alias ll='ls -lahFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
 
