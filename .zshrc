@@ -56,6 +56,7 @@ if [ -e /usr/local/share/zsh-completions ]; then
     fpath=(/usr/local/share/zsh-completions $fpath)
 fi
 
+
 # 文字コードの指定
 export LANG=ja_JP.UTF-8
 
