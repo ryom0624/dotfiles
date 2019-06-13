@@ -17,3 +17,6 @@ autocmd ColorScheme * highlight LineNr ctermfg=100
 set background=dark
 "colorscheme molokai
 colorscheme hybrid
+
+set mouse=a
+set ttymouse=xterm2
