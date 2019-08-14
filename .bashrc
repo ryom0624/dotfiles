@@ -13,8 +13,6 @@ alias cow='fortune|cowsay'
 
 alias yu="mpsyt"
 
-eval "$(rbenv init -)"
-
 export LSCOLORS=gxfxcxdxbxegedabagacad
 
 export NVM_DIR="$HOME/.nvm"
