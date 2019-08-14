@@ -113,7 +113,7 @@ setopt auto_list
 setopt auto_menu
 
 # 補完候補を一覧表示したとき、Tabや矢印で選択できるようにする
-zstyle ':completion:*:default' menu select=1 
+zstyle ':completion:*:default' menu select=1
 
 # LS_COLORSを設定しておく
 export LS_COLORS='di=01;36:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
@@ -154,7 +154,7 @@ alias sv='ssh 192.168.33.10'
 ###############################################
 
 PROMPT="
-  %{${fg[green]}%}%~%{${reset_color}%} 
+  %{${fg[green]}%}%~%{${reset_color}%}
 $ "
 
 PROMPT2='> '
