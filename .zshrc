@@ -182,7 +182,25 @@ setopt hist_expire_dups_first # 古い履歴を削除する必要がある場合
 setopt hist_expand # 補完時にヒストリを自動的に展開する
 setopt inc_append_history # 履歴をインクリメンタルに追加
 
+###############################################
+##
+##  Node.jsのPATHをnvmにする
+##
+##############################################
+# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-
-
-
+###############################################
+##
+##  PythonのPATHをpyenvにする
+##
+##############################################
+# brew install pyenv
+# pyenv install XX.XX.XX
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+# source ~/dotfiles/.zshrc
+# pyenv global XX.XX.XX
