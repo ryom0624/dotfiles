@@ -139,11 +139,19 @@ alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
 
+
+#### Vagrant
 alias vu='vagrant up'
 alias vh='vagrant halt'
 alias vr='vagrant reload'
 alias vs='vagrant global-status'
 alias sv='ssh 192.168.33.10'
+
+
+#### Docker
+alias dils="docker image ls"
+alias dcls="docker container ls -a --format \"table {{.ID}}\t{{.Names}}\t{{.Status}}\""
+alias dcrm="docker container prune"
 
 
 
