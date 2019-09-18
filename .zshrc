@@ -149,12 +149,18 @@ alias sv='ssh 192.168.33.10'
 
 
 #### Docker
+alias di="docker image"
+alias dirm="docker image rm"
 alias dils="docker image ls"
 alias dilsa="docker image ls -a"
-alias dcls="docker container ls -a --format \"table {{.ID}}\t{{.Names}}\t{{.Status}}\""
+alias dc="docker container"
 alias dcp="docker container prune"
 alias dcs="docker container stop"
 alias dcrm="docker container rm"
+alias dcls="docker container ls -a --format \"table {{.ID}}\t{{.Names}}\t{{.Status}}\""
+alias dc="docker-compose"
+alias dcpup="docker-compose up -d"
+alias dcpd="docker-compose down"
 
 
 ################################################
