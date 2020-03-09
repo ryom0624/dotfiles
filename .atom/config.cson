@@ -1,0 +1,31 @@
+"*":
+  "atom-ide-ui":
+    "atom-ide-code-format":
+      formatOnSave: true
+  autosave:
+    enabled: true
+  core:
+    automaticallyUpdate: false
+    disabledPackages: [
+      "spell-check"
+      "linter"
+    ]
+    telemetryConsent: "no"
+  editor:
+    fontSize: 12
+    showIndentGuide: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "9db39a4b-89c8-4aaa-8ac2-134da4a89586"
+  "linter-golinter":
+    executablePath: "/home/vagrant/go/src/golang"
+  "linter-ui-default":
+    panelHeight: 298
+  "platformio-ide-terminal":
+    core:
+      shell: "/bin/zsh"
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ensureSingleTrailingNewline: false
+    removeTrailingWhitespace: false

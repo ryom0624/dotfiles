@@ -1,0 +1,164 @@
+version: 2.1
+executors:
+  default:
+    #working_directory: ~/repo
+    docker:
+      - image: circleci/node
+  gcloud:
+    docker:
+      - image: google/cloud-sdk:alpine
+
+commands:
+  yarn_build:
+    description: "yarnのビルド"
+    steps:
+      - run:
+          name: Build yarn
+          command: |
+            apk add --no-cache nodejs npm yarn
+            yarn
+            yarn build
+  setup_environments:
+    description: "環境のセットアップ"
+    parameters:
+      env:
+        default: "DEVELOPMENT"
+        description: ブランチ別の環境変数を"DEVELOPMENT", "STAGING", "PRODUCTION"から選択。
+        type: enum
+        enum: ["DEVELOPMENT", "STAGING", "PRODUCTION"]
+    steps:
+      - run:
+          name: Set up Environments
+          command: |
+            echo $<< parameters.env >>_GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project $<< parameters.env >>_GOOGLE_PROJECT_ID
+            gcloud --quiet config set compute/zone $<< parameters.env >>_GOOGLE_COMPUTE_ZONE
+    
+
+jobs:
+  build:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - setup_environments
+      - run: echo 1 # ここにあなたのプロジェクトにあわせたテストを記述
+  deploy:
+    executor: gcloud
+    parameters:
+      is_production:
+        type: boolean
+        default: false
+    steps:
+      - checkout
+      - yarn_build
+      - setup_environments
+      - when:
+          condition: << parameters.is_production >>
+          steps:
+            - run: gcloud app deploy --no-promote --version deploy-$CIRCLE_BUILD_NUM
+      - unless:
+          condition: << parameters.is_production >>
+          steps:
+            - run: gcloud app deploy --version deploy-$CIRCLE_BUILD_NUM
+  set_traffic:
+    parameters:
+      before-traffic:
+        type: string
+        default: "0.99"
+      after-traffic:
+        type: string
+        default: "0.01"
+    executor: gcloud
+    steps:
+      - checkout
+      - setup_environments
+      - run: |
+          BEFORE_VERSION="$(gcloud app versions list --service=${GAE_SERVICE} --filter='traffic_split>0.5' --format='value(id)')"
+          gcloud app services set-traffic --splits ${BEFORE_VERSION}=<< parameters.before-traffic >>,${CIRCLE_SHA1}=<< parameters.after-traffic >> --split-by=random --quiet
+
+  promote:
+    executor: gcloud
+    steps:
+      - checkout
+      - setup_environments
+      - run: gcloud app services set-traffic --splits ${CIRCLE_SHA1}=1 --split-by=random --quiet --migrate
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - deploy:
+        name: deploy_development:
+          filters:
+            branches:
+              only:
+                - development
+      - deploy_staging:
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - hold_prod:
+          type: approval
+          requires:
+            - deploy_staging
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - deploy_production:
+          requires:
+            - hold_prod
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - hold_canary:
+          type: approval
+          requires:
+            - deploy_production
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - set_traffic:
+          name: canary
+          requires:
+            - hold_canary
+          before-traffic: "0.99"
+          after-traffic: "0.01"
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - hold_promote:
+          type: approval
+          requires:
+            - canary
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master
+      - promote:
+          requires:
+            - hold_promote
+          filters:
+            tags:
+              only: /^v(\.[0-9]){3}.*/
+            branches:
+              only:
+                - master

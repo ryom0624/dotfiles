@@ -1,0 +1,38 @@
+name: deploy to app engine development
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@master
+        with:
+          ref: develop
+      - name: Setup hugo
+        run: |
+            wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}-64bit.deb
+            sudo dpkg -i hugo_${HUGO_VERSION}_Linux-64bit.deb
+            hugo version
+        env:
+            HUGO_VERSION: '0.60.1'
+      - name: setup_nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: install_dependencies_and_build
+        run: |
+          npm install
+          npm run build
+          hugo
+      - name: deploy_to_app_engine
+        uses: actions-hub/gcloud@master
+        env:
+            PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+            APPLICATION_CREDENTIALS: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}}
+        with:
+          args: app deploy app.yaml --no-promote

@@ -1,0 +1,84 @@
+{
+  "_from": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+  "_id": "show-ideographic-space@1.0.2",
+  "_inBundle": false,
+  "_integrity": "sha512-UqCXctfb4aBKFcKNbnOxa0de4QcSMVhOhyGw28gJ6XnOwB/b+jjeCpzY2BvIRYb8Y6MSKdaHhznj1UOpr3JnWg==",
+  "_location": "/show-ideographic-space",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+    "rawSpec": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+    "saveSpec": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+    "fetchSpec": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+  "_shasum": "8712794ff0e1b271e7b346f5e3d590d3fe2e37f5",
+  "_spec": "https://www.atom.io/api/packages/show-ideographic-space/versions/1.0.2/tarball",
+  "_where": "/private/var/folders/tc/8nlxmgx555d7zg2rfhm83g340000gn/T/apm-install-dir-119714-15885-15nkyl2.0sst",
+  "bugs": {
+    "url": "https://github.com/raccy/show-ideographic-space/issues"
+  },
+  "bundleDependencies": false,
+  "coffeelintConfig": {
+    "arrow_spacing": {
+      "name": "arrow_spacing",
+      "level": "error"
+    },
+    "ensure_comprehensions": {
+      "name": "ensure_comprehensions",
+      "level": "error"
+    },
+    "max_line_length": {
+      "name": "max_line_length",
+      "value": 120,
+      "level": "error",
+      "limitComments": true
+    },
+    "indentation": {
+      "name": "indentation",
+      "value": 2,
+      "level": "error"
+    },
+    "no_empty_param_list": {
+      "name": "no_empty_param_list",
+      "level": "error"
+    },
+    "cyclomatic_complexity": {
+      "name": "cyclomatic_complexity",
+      "value": 22,
+      "level": "error"
+    },
+    "no_unnecessary_fat_arrows": {
+      "name": "no_unnecessary_fat_arrows",
+      "level": "error"
+    },
+    "space_operators": {
+      "name": "space_operators",
+      "level": "error"
+    },
+    "spacing_after_comma": {
+      "name": "spacing_after_comma",
+      "level": "error"
+    }
+  },
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Show ideographic space (known as 全角スペース)",
+  "engines": {
+    "atom": ">=1.13.0 <2.0.0"
+  },
+  "homepage": "https://github.com/raccy/show-ideographic-space#readme",
+  "license": "MIT",
+  "main": "./lib/show-ideographic-space",
+  "name": "show-ideographic-space",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raccy/show-ideographic-space.git"
+  },
+  "version": "1.0.2"
+}
