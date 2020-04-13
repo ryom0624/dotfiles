@@ -26,15 +26,15 @@ do
  code --install-extension $line
 done
 
-code --list-extensions > extensions
+code --list-extensions > $VSCODE_DOTFILES_DIR/extensions
 
 #####
 ## atomの設定インポート
 #####
 
 CWD=$(pwd)
-SWD=$(cd $(dirname $0) && pwd)
-LWD=$(cd $(dirname $0) && cd .. && pwd)
+SWD=$(cd $(dirname $0)/.atom && pwd)
+LWD=$(cd $(dirname $0)/.atom && cd .. && pwd)
 
 # trap
 trap 'echo -e "\nabort!" ; exit 1' 1 2 3 15
