@@ -14,7 +14,7 @@ done
 VSCODE_DOTFILES_DIR=$(pwd)/.vscode
 VSCODE_SETTING_DIR=~/Library/Application\ Support/Code/User
 
-if [ -f "$VSCODE_SETTING_DIR= ]; then
+if [ -f "$VSCODE_SETTING_DIR" ]; then
     echo "$FILE exists."
     rm "$VSCODE_SETTING_DIR/settings.json"
     ln -s "$VSCODE_DOTFILES_DIR/settings.json" "${VSCODE_SETTING_DIR}/settings.json"
