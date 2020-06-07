@@ -1,1 +1,1 @@
-/Users/two_0002/dotfiles/.vim
+/Users/ryo/dotfiles/.vim

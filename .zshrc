@@ -228,9 +228,9 @@ export NVM_DIR="$HOME/.nvm"
 ##############################################
 # brew install pyenv
 # pyenv install XX.XX.XX
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 # source ~/dotfiles/.zshrc
 # pyenv global XX.XX.XX
 
@@ -242,10 +242,10 @@ eval "$(pyenv init -)"
 ##############################################
  
 # export GO111MODULE=on
-export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
+# export GOENV_ROOT="$HOME/.goenv"
+# export PATH="$GOENV_ROOT/bin:$PATH"
+# eval "$(goenv init -)"
+# export PATH="$GOROOT/bin:$PATH"
+# export PATH="$GOPATH/bin:$PATH"
 
 
