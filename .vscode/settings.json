@@ -7,5 +7,6 @@
     "emmet.triggerExpansionOnTab": true,
     "atomKeymap.promptV3Features": true,
     "editor.multiCursorModifier": "ctrlCmd",
-    "editor.formatOnPaste": true
+    "editor.formatOnPaste": true,
+    "window.zoomLevel": 0
 }
