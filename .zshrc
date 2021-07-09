@@ -43,14 +43,6 @@ fi
 #zplug load --verbose
 zplug load
 
-###############################################
-##
-##  Gcloud
-##
-##############################################
-
-
-
 ######################################
 ##
 ## 基本設定
@@ -145,7 +137,7 @@ alias la='ls -lahFG'
 alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
-
+alias cdgit='cd ~/git'
 
 #### Vagrant
 alias vu='vagrant up'
@@ -222,9 +214,9 @@ export NVM_DIR="$HOME/.nvm"
 ##############################################
 # brew install pyenv
 # pyenv install XX.XX.XX
-# export PYENV_ROOT="$HOME/.pyenv"
-# export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
 # source ~/dotfiles/.zshrc
 # pyenv global XX.XX.XX
 
@@ -235,13 +227,27 @@ export NVM_DIR="$HOME/.nvm"
 ##
 ##############################################
  
-# export GO111MODULE=on
-# export GOENV_ROOT="$HOME/.goenv"
-# export PATH="$GOENV_ROOT/bin:$PATH"
-# eval "$(goenv init -)"
-# export PATH="$GOROOT/bin:$PATH"
-# export PATH="$GOPATH/bin:$PATH"
+export GO111MODULE=on
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
 
+###############################################
+##
+##  Gcloud
+##
+##############################################
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
+
+export CLOUDSDK_PYTHON=$(which python3)
 
 
 # The next line updates PATH for the Google Cloud SDK.
