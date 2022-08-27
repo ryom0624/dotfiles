@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
 #################################################
 ##
 ## zplug
@@ -138,6 +140,8 @@ alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
 alias cdgit='cd ~/git'
+alias oss='cd ~/git/__OSS'
+alias per='cd ~/git/__Personal'
 
 #### Vagrant
 alias vu='vagrant up'
@@ -221,6 +225,15 @@ eval "$(pyenv init -)"
 # pyenv global XX.XX.XX
 
 
+#############################################
+##
+##  Ruby
+##
+############################################
+
+eval "$(rbenv init -)"
+
+
 ###############################################
 ##
 ##  GOのPATHをgoenvにする
@@ -248,4 +261,61 @@ if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sd
 if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
 
 export CLOUDSDK_PYTHON=$(which python3)
+
+###############################################
+##
+##  Solana
+##
+##############################################
+
+export PATH="$PATH:$HOME/.local/share/solana/install/active_release/bin"
+
+###############################################
+##
+##  Rust
+##
+##############################################
+export PATH="$PATH:$HOME/.cargo/bin"
+
+
+###############################################
+##
+##  foundry
+##
+##############################################
+
+export PATH="$PATH:$HOME/.foundry/bin"
+
+
+################################################
+##
+##  pyenv * miniforge
+##
+##############################################
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('$HOME/.pyenv/versions/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh"
+    else
+        export PATH="$HOME/.pyenv/versions/miniforge3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+###############################################
+##
+##  fig
+##
+##############################################
+# insall fig
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
+
+
 
