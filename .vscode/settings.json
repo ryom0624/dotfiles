@@ -7,13 +7,15 @@
   "atomKeymap.promptV3Features": true,
   "editor.accessibilitySupport": "off",
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": false
+    // "source.fixAll": true
     // "source.organizeImports": true # sortImport遅い
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.detectIndentation": false,
   "editor.fontSize": 13,
-  "editor.formatOnPaste": true, // ペースト時にフォーマット
   "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
   "editor.formatOnType": false, // 入力中（改行時）にフォーマット
   "editor.multiCursorModifier": "ctrlCmd",
   "editor.renderWhitespace": "all",
@@ -40,6 +42,10 @@
     "/.pyenv/versions/anaconda3-2020.11/lib/python3.8/site-packages"
   ],
   // "python.linting.flake8Enabled": true,
+  "python.autoComplete.extraPaths": [
+    "~/.pyenv/versions/3.9.13/lib/python3.9/site-packages/",
+    // "~/.pyenv/versions/miniforge3/envs/python39/lib/python3.9/site-packages"
+  ],
   "python.autoComplete.addBrackets": true,
   "python.autoComplete.preloadModules": [
     "numpy",
@@ -48,13 +54,15 @@
     "matplotlib"
   ],
   "python.condaPath": "~/.pyenv/versions/miniforge3/envs/python39",
-  "python.formatting.blackArgs": ["--line-length=79"],
-  "python.formatting.blackPath": "~/.pyenv/shims/black",
-  "python.formatting.provider": "black",
+  // "python.formatting.blackArgs": ["--line-length=79"],
+  // "python.formatting.blackPath": "~/.pyenv/shims/black",
+  // "python.formatting.provider": "black",
   // "python.pythonPath": "python",
   "python.jediEnabled": false,
-  "python.languageServer": "None",
-  "python.linting.flake8Args": ["max-line-length=100"],
+  "python.languageServer": "Default",
+  "python.linting.flake8Args": [
+    "max-line-length=100"
+  ],
   "python.linting.flake8CategorySeverity.E": "Warning",
   "python.linting.flake8CategorySeverity.F": "Warning",
   "python.linting.flake8Path": "~/.pyenv/shims/flake8",
@@ -84,7 +92,7 @@
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "window.zoomLevel": 0,
   "workbench.editorAssociations": {
-    "*.ipynb": "jupyter.notebook.ipynb"
+    // "*.ipynb": "jupyter.notebook.ipynb"
   },
   "workbench.iconTheme": "vscode-icons",
   "workbench.settings.enableNaturalLanguageSearch": false,
@@ -92,5 +100,34 @@
   "[html]": {
     "editor.formatOnSave": false
   },
-  "terminal.integrated.allowChords": false
+  "terminal.integrated.allowChords": false,
+  "indentRainbow.indicatorStyle": "light",
+  "indentRainbow.ignoreErrorLanguages": [
+    "markdown"
+  ],
+  "vscodeGoogleTranslate.preferredLanguage": "Japanese",
+  "vscodeGoogleTranslate.HoverTranslations": true,
+  "search.useIgnoreFiles": false,
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "python.analysis.autoImportCompletions": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar",
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+  "[solidity]": {
+    "editor.tabSize": 4
+  },
+  "prettier.printWidth": 150,
+  "editor.tabSize": 2,
 }
