@@ -1,5 +1,5 @@
 # Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && . "$HOME/.fig/shell/zshrc.pre.zsh"
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #################################################
 ##
 ## zplug
@@ -134,6 +134,7 @@ export LESS='-R'
 ##
 ###############################################
 
+alias rmi='rm -i'
 alias ls='ls -FG'
 alias la='ls -lahFG'
 alias ll='ls -lhFG'
@@ -164,7 +165,7 @@ alias dcls="docker container ls -a --format \"table {{.ID}}\t{{.Names}}\t{{.Stat
 alias dc="docker-compose"
 alias dcpup="docker-compose up -d"
 alias dcpd="docker-compose down"
-
+alias dclog="dc logs -f --tail"
 
 ################################################
 ##
@@ -207,9 +208,19 @@ setopt inc_append_history # 履歴をインクリメンタルに追加
 ##
 ##############################################
 # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+
+### 直ダウンロード
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+### homebrew
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
 
 ###############################################
 ##
@@ -243,9 +254,11 @@ eval "$(rbenv init -)"
 export GO111MODULE=on
 export GOENV_ROOT="$HOME/.goenv"
 export PATH="$GOENV_ROOT/bin:$PATH"
+export PATH="$GOENV_ROOT/shims:$PATH"
 eval "$(goenv init -)"
 export PATH="$GOROOT/bin:$PATH"
 export PATH="$GOPATH/bin:$PATH"
+
 
 ###############################################
 ##
@@ -253,12 +266,6 @@ export PATH="$GOPATH/bin:$PATH"
 ##
 ##############################################
 
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
 
 export CLOUDSDK_PYTHON=$(which python3)
 
@@ -314,8 +321,17 @@ unset __conda_setup
 ##
 ##############################################
 # insall fig
+
+
+
+
+alias scd="smartcontractdownloader"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 # Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
-
-
-
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
