@@ -75,6 +75,11 @@ setopt AUTO_CD
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 
+# 同じコマンドをhistoryに残さない
+setopt hist_ignore_all_dups
+
+# historyに余分なスペースを残さない。
+setopt hist_reduce_blanks
 
 # 色を使用出来るようにする
 autoload -Uz colors
@@ -89,7 +94,6 @@ setopt no_beep
 
 # ビープ音の停止(補完時)
 setopt nolistbeep
-
 
 # 補完で小文字でも大文字にマッチさせる
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -123,6 +127,8 @@ export LSCOLORS=GxFxcxdxbxegedabagacad
 # ファイル補完候補に色を付ける
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
+# git-prompt
+setopt PROMPT_SUBST
 
 # less
 export LESS='-R'
@@ -265,9 +271,13 @@ export PATH="$GOPATH/bin:$PATH"
 ##  Gcloud
 ##
 ##############################################
-
-
 export CLOUDSDK_PYTHON=$(which python3)
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 
 ###############################################
 ##
@@ -321,17 +331,18 @@ unset __conda_setup
 ##
 ##############################################
 # insall fig
-
-
-
-
-alias scd="smartcontractdownloader"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+
+### MyScripts
+alias scd="smartcontractdownloader"
+
+
+
+
+
+
+
+
+
