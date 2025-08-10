@@ -331,21 +331,12 @@ export PATH="$PATH:$HOME/.foundry/bin"
 # <<< conda initialize <<<
 
 
-###############################################
+##############################################
 ##
-##  fig
+##  direnv
 ##
 ##############################################
-# insall fig
-
-### MyScripts
-alias scd="smartcontractdownloader"
-
-
-
-
-
-
+eval "$(direnv hook bash)"
 
 
 
