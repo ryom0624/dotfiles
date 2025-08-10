@@ -183,8 +183,11 @@ PROMPT="
   %{${fg[green]}%}%~%{${reset_color}%}
 $ "
 
-PROMPT2='> '
-RPROMPT="%{${fg[green]}%}[%m @ %n]%{${reset_color}%}"
+# oh-my-zsh
+#PROMPT=$’%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%X]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\
+
+#PROMPT2='> '
+#RPROMPT="%{${fg[green]}%}[%m @ %n]%{${reset_color}%}"
 
 
 
@@ -272,12 +275,15 @@ export PATH="$GOPATH/bin:$PATH"
 ##
 ##############################################
 export CLOUDSDK_PYTHON=$(which python3)
+
+
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '$HOME/.google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/two_0109/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '$HOME/.google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/completion.zsh.inc'; fi
 
+export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
 
 ###############################################
 ##
@@ -311,17 +317,17 @@ export PATH="$PATH:$HOME/.foundry/bin"
 ##############################################
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/.pyenv/versions/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/.pyenv/versions/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('$HOME/.pyenv/versions/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+# else
+#     if [ -f "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh" ]; then
+#         . "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="$HOME/.pyenv/versions/miniforge3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 
 
@@ -331,9 +337,6 @@ unset __conda_setup
 ##
 ##############################################
 # insall fig
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
-
 
 ### MyScripts
 alias scd="smartcontractdownloader"
