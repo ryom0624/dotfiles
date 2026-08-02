@@ -75,4 +75,30 @@ for file in "${DOT_FILES[@]}"; do
   ln -fhs "$DOTFILES_DIR/$file" "$HOME/$file"
 done
 
+# --- Herdr 設定のシンボリックリンク作成 ---
+HERDR_CONFIG_DIR="$HOME/.config/herdr"
+HERDR_CONFIG_LINK="$HERDR_CONFIG_DIR/config.toml"
+HERDR_CONFIG_TARGET="$DOTFILES_DIR/config/herdr/config.toml"
+
+mkdir -p "$HERDR_CONFIG_DIR"
+
+if [ -L "$HERDR_CONFIG_LINK" ]; then
+  current_target="$(readlink "$HERDR_CONFIG_LINK")"
+  if [ "$current_target" = "$HERDR_CONFIG_TARGET" ]; then
+    echo "Symlink already correct: $HERDR_CONFIG_LINK -> $HERDR_CONFIG_TARGET"
+  else
+    echo "Warning: $HERDR_CONFIG_LINK points to '$current_target', not '$HERDR_CONFIG_TARGET'. Skipping." >&2
+    _FAILED=1
+  fi
+elif [ -e "$HERDR_CONFIG_LINK" ]; then
+  BACKUP="$HERDR_CONFIG_LINK.bak.$(date +%Y%m%d%H%M%S)"
+  echo "Backing up existing $HERDR_CONFIG_LINK to $BACKUP"
+  mv "$HERDR_CONFIG_LINK" "$BACKUP"
+  ln -s "$HERDR_CONFIG_TARGET" "$HERDR_CONFIG_LINK"
+  echo "Created symlink: $HERDR_CONFIG_LINK -> $HERDR_CONFIG_TARGET"
+else
+  ln -s "$HERDR_CONFIG_TARGET" "$HERDR_CONFIG_LINK"
+  echo "Created symlink: $HERDR_CONFIG_LINK -> $HERDR_CONFIG_TARGET"
+fi
+
 exit $_FAILED

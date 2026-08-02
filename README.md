@@ -40,6 +40,7 @@ git submodule update --init --recursive
 3. `tools/fzf/install --bin` で fzf バイナリをインストール
 4. `~/.local/bin/fzf` → `tools/fzf/bin/fzf` のシンボリックリンクを作成
 5. `.zshrc` `.zprofile` `.vim` `.vimrc` `.tmux.conf` を `$HOME` へシンボリックリンク
+6. `~/.config/herdr/config.toml` → `config/herdr/config.toml` のシンボリックリンクを作成（既存の通常ファイルは `.bak.YYYYMMDDHHMMSS` へバックアップ、再実行は冪等）
 
 ---
 
@@ -53,6 +54,9 @@ dotfiles/
 ├── .vimrc               # Vim 設定
 ├── .vim/                # Vim ディレクトリ
 ├── .tmux.conf           # tmux 設定
+├── config/
+│   └── herdr/
+│       └── config.toml  # Herdr 設定（~/.config/herdr/config.toml へリンク）
 ├── zsh/
 │   ├── plugins.zsh      # プラグイン読み込み設定
 │   └── plugins/
@@ -148,6 +152,18 @@ Git サブモジュールで管理され、`zsh/plugins.zsh` により compinit 
 | `gl` | `git pull` | |
 | `gclone` | `git clone` | |
 | `h` | `herdr` | herdr のショートカット |
+
+---
+
+## Herdr 設定
+
+`config/herdr/config.toml` で管理する最小構成です。`setup.sh` が `~/.config/herdr/config.toml` へシンボリックリンクを作成します。
+
+| 設定 | 値 | 内容 |
+|------|----|------|
+| `[ui] agent_panel_sort` | `"priority"` | エージェントパネルを注意待ち順で表示 |
+| `[experimental] pane_history` | `false` | サーバー再起動後のペイン履歴を保持しない |
+
 
 ---
 

@@ -1,0 +1,10 @@
+# Herdr 設定（最小構成）
+# このファイルは dotfiles で管理され、~/.config/herdr/config.toml にシンボリックリンクされます。
+
+[ui]
+# エージェントパネルの並び順: "priority"（注意待ちキュー順）
+agent_panel_sort = "priority"
+
+[experimental]
+# サーバー再起動後もペインのスクロールバック履歴を保持しない
+pane_history = false
