@@ -158,8 +158,8 @@ fi
 alias h='herdr'
 
 # 対話型ターミナルの起動時に Herdr へ接続する
-# Herdr 内で作られたシェルからの再起動は防止する
-if [[ -o interactive && -t 0 && -t 1 && -z ${HERDR_SESSION:-} ]] \
+# Herdr 管理ペイン内（HERDR_ENV=1）からの再起動は防止する
+if [[ -o interactive && -t 0 && -t 1 && ${HERDR_ENV:-} != 1 ]] \
   && (( $+commands[herdr] )); then
   herdr
 fi
