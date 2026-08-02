@@ -73,6 +73,26 @@ setopt PROMPT_SUBST
 # less
 export LESS='-R'
 
+################################################
+##
+## 履歴関連の設定
+##
+###############################################
+
+HISTFILE=~/.z_history #履歴ファイルの設定
+HISTSIZE=1000000 # メモリに保存される履歴の件数。(保存数だけ履歴を検索できる)
+SAVEHIST=1000000 # ファイルに何件保存するか
+setopt extended_history # 実行時間とかも保存する
+setopt share_history # 別のターミナルでも履歴を参照できるようにする
+# setopt inc_append_history # 履歴をインクリメンタルに追加
+setopt hist_ignore_all_dups # 過去に同じ履歴が存在する場合、古い履歴を削除し重複しない
+setopt hist_ignore_space # コマンド先頭スペースの場合保存しない
+setopt hist_verify # ヒストリを呼び出してから実行する間に一旦編集できる状態になる
+setopt hist_reduce_blanks #余分なスペースを削除してヒストリに記録する
+setopt hist_save_no_dups # histryコマンドは残さない
+setopt hist_expire_dups_first # 古い履歴を削除する必要がある場合、まず重複しているものから削除
+setopt hist_expand # 補完時にヒストリを自動的に展開する
+
 
 #################################################
 ##
@@ -118,27 +138,6 @@ PROMPT='
 RPROMPT='%(?..%F{red}✘ %?%f )%F{white}%D{%H:%M}%f'
 
 
-################################################
-##
-## 履歴関連の設定
-##
-###############################################
-
-HISTFILE=~/.z_history #履歴ファイルの設定
-HISTSIZE=1000000 # メモリに保存される履歴の件数。(保存数だけ履歴を検索できる)
-SAVEHIST=1000000 # ファイルに何件保存するか
-setopt extended_history # 実行時間とかも保存する
-setopt share_history # 別のターミナルでも履歴を参照できるようにする
-# setopt inc_append_history # 履歴をインクリメンタルに追加
-setopt hist_ignore_all_dups # 過去に同じ履歴が存在する場合、古い履歴を削除し重複しない
-setopt hist_ignore_space # コマンド先頭スペースの場合保存しない
-setopt hist_verify # ヒストリを呼び出してから実行する間に一旦編集できる状態になる
-setopt hist_reduce_blanks #余分なスペースを削除してヒストリに記録する
-setopt hist_save_no_dups # histryコマンドは残さない
-setopt hist_expire_dups_first # 古い履歴を削除する必要がある場合、まず重複しているものから削除
-setopt hist_expand # 補完時にヒストリを自動的に展開する
-
-
 ##############################################
 ##
 ##  direnv
@@ -151,6 +150,7 @@ setopt hist_expand # 補完時にヒストリを自動的に展開する
 ## herdr
 ##
 ##############################################
+
 if (( $+commands[herdr] )); then
   source <(herdr completion zsh)
 fi
@@ -163,3 +163,16 @@ if [[ -o interactive && -t 0 && -t 1 && -z ${HERDR_SESSION:-} ]] \
   && (( $+commands[herdr] )); then
   herdr
 fi
+
+##############################################
+##
+## plugins
+##
+##############################################
+
+# プラグイン設定を最後に読み込む
+_zshrc_dir="${${(%):-%N}:A:h}"
+if [[ -f "${_zshrc_dir}/zsh/plugins.zsh" ]]; then
+  source "${_zshrc_dir}/zsh/plugins.zsh"
+fi
+unset _zshrc_dir
