@@ -1,62 +1,8 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-#################################################
-##
-## zplug
-##
-################################################
-
-# zplugが無ければgitからclone
-if [[ ! -d ~/.zplug ]];then
-  git clone https://github.com/zplug/zplug ~/.zplug
-fi
-
-# zplugを使う
-source ~/.zplug/init.zsh
-
-# ここに使いたいプラグインを書いておく
-# zplug "ユーザー名/リポジトリ名", タグ
-
-# zshの候補選択を拡張するプラグイン
-zplug zsh-users/zsh-completions
-
-# 入力途中に候補をうっすら表示
-zplug "zsh-users/zsh-autosuggestions"
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=240'
-
-# コマンドを種類ごとに色付け
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-# ヒストリの補完を強化する
-zplug "zsh-users/zsh-history-substring-search", defer:3
-
-# 自分自身をプラグインとして管理
-zplug "zplug/zplug", hook-build:'zplug --self-manage'
-
-# インストールしてないプラグインはインストール
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
-
-# コマンドをリンクして、PATH に追加し、プラグインは読み込む
-#zplug load --verbose
-zplug load
-
 ######################################
 ##
 ## 基本設定
 ##
 #####################################
-
-
-
-if [ -e /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
-fi
-
 
 # 文字コードの指定
 export LANG=ja_JP.UTF-8
@@ -74,12 +20,6 @@ setopt AUTO_CD
 # cdの履歴を保持（同一のディレクトリは重複排除）
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
-
-# 同じコマンドをhistoryに残さない
-setopt hist_ignore_all_dups
-
-# historyに余分なスペースを残さない。
-setopt hist_reduce_blanks
 
 # 色を使用出来るようにする
 autoload -Uz colors
@@ -146,32 +86,7 @@ alias la='ls -lahFG'
 alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
-alias cdgit='cd ~/git'
-alias oss='cd ~/git/__OSS'
-alias per='cd ~/git/__Personal'
 
-#### Vagrant
-alias vu='vagrant up'
-alias vh='vagrant halt'
-alias vr='vagrant reload'
-alias vs='vagrant global-status'
-alias sv='ssh 192.168.33.10'
-
-
-#### Docker
-alias di="docker image"
-alias dirm="docker image rm"
-alias dils="docker image ls"
-alias dilsa="docker image ls -a"
-alias dc="docker container"
-alias dcp="docker container prune"
-alias dcs="docker container stop"
-alias dcrm="docker container rm"
-alias dcls="docker container ls -a --format \"table {{.ID}}\t{{.Names}}\t{{.Status}}\""
-alias dc="docker-compose"
-alias dcpup="docker-compose up -d"
-alias dcpd="docker-compose down"
-alias dclog="dc logs -f --tail"
 
 ################################################
 ##
@@ -182,12 +97,6 @@ alias dclog="dc logs -f --tail"
 PROMPT="
   %{${fg[green]}%}%~%{${reset_color}%}
 $ "
-
-# oh-my-zsh
-#PROMPT=$’%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%X]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)\
-
-#PROMPT2='> '
-#RPROMPT="%{${fg[green]}%}[%m @ %n]%{${reset_color}%}"
 
 
 
@@ -202,6 +111,7 @@ HISTSIZE=1000000 # メモリに保存される履歴の件数。(保存数だけ
 SAVEHIST=1000000 # ファイルに何件保存するか
 setopt extended_history # 実行時間とかも保存する
 setopt share_history # 別のターミナルでも履歴を参照できるようにする
+# setopt inc_append_history # 履歴をインクリメンタルに追加
 setopt hist_ignore_all_dups # 過去に同じ履歴が存在する場合、古い履歴を削除し重複しない
 setopt hist_ignore_space # コマンド先頭スペースの場合保存しない
 setopt hist_verify # ヒストリを呼び出してから実行する間に一旦編集できる状態になる
@@ -209,126 +119,6 @@ setopt hist_reduce_blanks #余分なスペースを削除してヒストリに�
 setopt hist_save_no_dups # histryコマンドは残さない
 setopt hist_expire_dups_first # 古い履歴を削除する必要がある場合、まず重複しているものから削除
 setopt hist_expand # 補完時にヒストリを自動的に展開する
-setopt inc_append_history # 履歴をインクリメンタルに追加
-
-###############################################
-##
-##  Node.jsのPATHをnvmにする
-##
-##############################################
-# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-
-
-### 直ダウンロード
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-### homebrew
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-
-
-###############################################
-##
-##  PythonのPATHをpyenvにする
-##
-##############################################
-# brew install pyenv
-# pyenv install XX.XX.XX
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-# source ~/dotfiles/.zshrc
-# pyenv global XX.XX.XX
-
-
-#############################################
-##
-##  Ruby
-##
-############################################
-
-eval "$(rbenv init -)"
-
-
-###############################################
-##
-##  GOのPATHをgoenvにする
-##
-##############################################
- 
-export GO111MODULE=on
-export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-export PATH="$GOENV_ROOT/shims:$PATH"
-eval "$(goenv init -)"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
-
-
-###############################################
-##
-##  Gcloud
-##
-##############################################
-export CLOUDSDK_PYTHON=$(which python3)
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '$HOME/.google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '$HOME/.google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/completion.zsh.inc'; fi
-
-export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
-
-###############################################
-##
-##  Solana
-##
-##############################################
-
-export PATH="$PATH:$HOME/.local/share/solana/install/active_release/bin"
-
-###############################################
-##
-##  Rust
-##
-##############################################
-export PATH="$PATH:$HOME/.cargo/bin"
-
-
-###############################################
-##
-##  foundry
-##
-##############################################
-
-export PATH="$PATH:$HOME/.foundry/bin"
-
-
-################################################
-##
-##  pyenv * miniforge
-##
-##############################################
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('$HOME/.pyenv/versions/miniforge3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#    eval "$__conda_setup"
-# else
-#     if [ -f "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh" ]; then
-#         . "$HOME/.pyenv/versions/miniforge3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="$HOME/.pyenv/versions/miniforge3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# <<< conda initialize <<<
 
 
 ##############################################
@@ -336,7 +126,4 @@ export PATH="$PATH:$HOME/.foundry/bin"
 ##  direnv
 ##
 ##############################################
-eval "$(direnv hook bash)"
-
-
-
+# eval "$(direnv hook bash)"
