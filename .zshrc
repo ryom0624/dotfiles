@@ -86,7 +86,8 @@ alias la='ls -lahFG'
 alias ll='ls -lhFG'
 alias ..='cd ..'
 alias hosts='sudo vi /etc/hosts'
-
+alias reload='source ~/.zshrc'
+alias zshrc='${EDITOR:-vi} ~/.zshrc'
 
 ################################################
 ##
@@ -94,10 +95,18 @@ alias hosts='sudo vi /etc/hosts'
 ##
 ###############################################
 
-PROMPT="
-  %{${fg[green]}%}%~%{${reset_color}%}
-$ "
+# Git情報
+autoload -Uz vcs_info add-zsh-hook
+zstyle ':vcs_info:git:*' formats '%F{magenta}git:(%b)%f'
+add-zsh-hook precmd vcs_info
 
+setopt PROMPT_SUBST
+
+PROMPT='
+%F{blue}╭─%f %F{yellow}%~%f ${vcs_info_msg_0_}
+%F{blue}╰─%f %# '
+
+RPROMPT='%(?..%F{red}✘ %?%f )%F{white}%D{%H:%M}%f'
 
 
 ################################################
