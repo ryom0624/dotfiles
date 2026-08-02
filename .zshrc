@@ -89,6 +89,15 @@ alias hosts='sudo vi /etc/hosts'
 alias reload='source ~/.zshrc'
 alias zshrc='${EDITOR:-vi} ~/.zshrc'
 
+# Git関連
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gp="git push"
+alias gl="git pull"
+alias gclone="git clone"
+
+
 ################################################
 ##
 ## promptの設定
@@ -145,3 +154,4 @@ setopt hist_expand # 補完時にヒストリを自動的に展開する
 if (( $+commands[herdr] )); then
   source <(herdr completion zsh)
 fi
+alias h='herdr'
