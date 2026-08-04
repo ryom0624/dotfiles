@@ -189,3 +189,8 @@ if [[ -f "${_zshrc_dir}/zsh/plugins.zsh" ]]; then
   source "${_zshrc_dir}/zsh/plugins.zsh"
 fi
 unset _zshrc_dir
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/rm/.lmstudio/bin"
+# End of LM Studio CLI section
+
