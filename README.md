@@ -59,6 +59,12 @@ dotfiles/
 ├── .vimrc               # Vim 設定
 ├── .vim/                # Vim ディレクトリ
 ├── .tmux.conf           # tmux 設定
+├── agents/
+│   ├── CLAUDE.md        # Claude グローバル指示
+│   ├── AGENTS.md        # Codex グローバル指示
+│   └── claude/          # CLAUDE.md が依存するファイルの控え
+│       ├── scripts/     # codex-wrapper 系
+│       └── templates/   # プロジェクト初期化用テンプレート
 ├── config/
 │   ├── cursor/
 │   │   ├── settings.json    # Cursor エディタ設定（JSONC）
@@ -95,6 +101,76 @@ dotfiles/
 | `config/cursor/keybindings.json` | `~/Library/Application Support/Cursor/User/keybindings.json` | Cursor キーバインド |
 | `config/karabiner/karabiner.json` | `~/.config/karabiner/karabiner.json` | Karabiner-Elements 設定 |
 | `config/herdr/config.toml` | `~/.config/herdr/config.toml` | Herdr 設定 |
+| `agents/CLAUDE.md` | `~/.claude/CLAUDE.md` | Claude グローバル指示（手動リンク） |
+| `agents/AGENTS.md` | `~/.codex/AGENTS.md` | Codex グローバル指示（手動リンク） |
+| `agents/claude/scripts/` | （リンクなし） | `~/.claude/scripts/` の控え |
+| `agents/claude/templates/` | （リンクなし） | `~/.claude/templates/` の控え |
+
+---
+
+## AI エージェント設定の方針
+
+### 管理範囲
+
+`agents/` にはグローバル指示のみを置きます。
+
+| 対象 | 管理 | 理由 |
+|------|------|------|
+| グローバル指示（`CLAUDE.md` / `AGENTS.md`） | dotfiles（リンク） | 秘密情報を含まず、環境間で共通 |
+| 指示が依存するスクリプト・テンプレート | dotfiles（控え） | 指示だけあっても動かないため、内容を追跡できるようにする |
+| skills | 管理外 | 業務・取引関連など公開したくないものが混ざる |
+| hooks | 管理外 | 環境ごとに有効・無効を変えるため |
+| `settings.json` / `config.toml` | 管理外 | Codex の `config.toml` は承認済みディレクトリを持つ。Claude の `settings.json` は移植可能だが、プラグインの有効・無効を環境ごとに変えるため揃える対象にしない |
+| 認証情報・履歴・ログ | 管理外 | `auth.json`、`history.jsonl`、`sessions/` は公開リポジトリに置かない |
+
+### 依存ファイルの扱い
+
+`CLAUDE.md` は `~/.claude/` 配下の実ファイルを参照します。指示だけを管理しても再現できないので、依存先を `agents/claude/` に控えとして置いています。
+
+| dotfiles の控え | 実体 | 参照元 |
+|----------------|------|--------|
+| `agents/claude/scripts/codex-wrapper.sh` | `~/.claude/scripts/codex-wrapper.sh` | 実装・レビューの委譲 |
+| `agents/claude/scripts/codex-wrapper-readonly.sh` | 同 `scripts/` | 読み取り専用実行 |
+| `agents/claude/scripts/codex-wrapper-test-failure-stub.sh` | 同 `scripts/` | テスト用スタブ |
+| `agents/claude/templates/` | `~/.claude/templates/` | プロジェクト初期化 |
+
+**控えはシンボリックリンクではありません。** `~/.claude/` 側が動作する実体で、dotfiles 側は記録用のコピーです。実体を変更したら手動でコピーし直してください。自動同期はしていないので、差分は次のコマンドで確認できます。
+
+```sh
+diff -r ~/.claude/scripts/codex-wrapper.sh ~/dotfiles/agents/claude/scripts/codex-wrapper.sh
+diff -r ~/.claude/templates ~/dotfiles/agents/claude/templates
+```
+
+`CLAUDE.md` が参照する `skills/codex-coding/SKILL.md` は控えを置いていません。skills 全体を管理外としているためで、新しい環境では別途用意する必要があります。
+
+### ファイル構成の方針
+
+各ファイルは自己完結させます。共通ファイルへの切り出しや import は行いません。エージェントごとに読み込まれる指示がファイル単体で完結していれば、挙動を追いやすく、片方だけ調整することもできます。
+
+- `CLAUDE.md` — 共通の基本方針に加えて、ワークフロー、Codex CLI への委譲手順、エージェントチーム構成。
+- `AGENTS.md` — 共通の基本方針に加えて、回答の構成、曖昧さへの対応、投資分析の観点。
+
+両者で重なる方針（言語、事実と推測の区別、批判的検討、最小差分、秘密情報、Python 実行環境、コーディング規約）は、それぞれのファイルに書きます。方針を変えるときは両方を確認してください。
+
+### 適用方法
+
+グローバル指示だけをリンクします。`setup.sh` では自動化していません（`~/.claude/` に管理外の実体が同居しているため）。
+
+```sh
+ln -sf ~/dotfiles/agents/CLAUDE.md ~/.claude/CLAUDE.md
+ln -sf ~/dotfiles/agents/AGENTS.md ~/.codex/AGENTS.md
+```
+
+`agents/claude/` の控えはリンクしません。上記の `diff` で差分を見て、必要なときに手でコピーします。
+
+### 書き方のルール
+
+- 検証可能で行動につながる指示だけを書く。「ベストプラクティスに従う」のような曖昧な文は書かない。
+- 「例外なし」と書いた規則には例外を作らない。守れない条件があるなら、その条件を規則に書く。
+- モデル名、言語バージョン、ツールのバージョンを埋め込まない。バージョンはプロジェクト側の `pyproject.toml` やロックファイルを正とする。
+- 言語ごとのコーディング規約はグローバル指示に書かず、`coding-standards` skill に置く。
+- 管理外のパスを参照する指示には、存在しない場合の代替手順を添える。
+- 特定のターミナル環境（tmux など）に依存する手順を書かない。
 
 ---
 

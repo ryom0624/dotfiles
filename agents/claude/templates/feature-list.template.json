@@ -1,0 +1,49 @@
+{
+  "$schema": "Claude Harness Feature List v1",
+  "project": "<PROJECT_NAME>",
+  "created_at": "<YYYY-MM-DD>",
+  "updated_at": "<YYYY-MM-DD>",
+  "schema_version": "1.0.0",
+  "_editing_policy": "DO NOT: (1) delete any feature id once assigned, (2) reuse retired ids, (3) change status enum values, (4) change schema_version manually, (5) modify status_legend or priority_legend. ALLOWED: append new features (next id), update status (pending -> in_progress -> passed only), update verification_steps (additive preferred), update owner / notes / updated_at.",
+  "features": [
+    {
+      "id": "F001",
+      "name": "<First Feature Name>",
+      "description": "<What this feature delivers from a user-facing standpoint. 1-3 sentences.>",
+      "status": "pending",
+      "priority": "P1",
+      "depends_on": [],
+      "verification_steps": [
+        "<Step 1: concrete check (e.g., curl http://localhost:3000/health returns HTTP 200)>"
+      ],
+      "owner": "",
+      "notes": ""
+    },
+    {
+      "id": "F002",
+      "name": "<Second Feature Name>",
+      "description": "<What this feature delivers from a user-facing standpoint. 1-3 sentences.>",
+      "status": "pending",
+      "priority": "P2",
+      "depends_on": [
+        "F001"
+      ],
+      "verification_steps": [
+        "<Step 1: concrete check that verifies F002 works after F001 is completed>"
+      ],
+      "owner": "",
+      "notes": ""
+    }
+  ],
+  "status_legend": {
+    "pending": "Not started",
+    "in_progress": "Currently being implemented",
+    "passed": "Implemented and verified by verification_steps"
+  },
+  "priority_legend": {
+    "P0": "Must ship immediately (blocker)",
+    "P1": "Core feature for current sprint",
+    "P2": "Important but defer if needed",
+    "P3": "Nice to have"
+  }
+}

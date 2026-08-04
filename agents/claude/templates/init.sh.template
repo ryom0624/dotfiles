@@ -1,0 +1,219 @@
+#!/usr/bin/env bash
+# init.sh - Project bootstrap & smoke check
+# Generated from ~/.claude/templates/init.sh.template by initializer agent.
+# Edit freely after generation; re-run is idempotent.
+# The dev server is torn down on exit, including on success. This script verifies
+# that the project boots and answers, it does not leave a server running.
+
+set -euo pipefail
+
+# --- Constants -------------------------------------------------------------
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="${PROJECT_ROOT}/.claude-init.log"
+TECH_STACK="<TECH_STACK>"
+PORT="${PORT:-3000}"
+HEALTH_URL="${HEALTH_URL:-http://localhost:${PORT}/health}"
+DB_CHECK_CMD="${DB_CHECK_CMD:-}"
+DEV_CMD="${DEV_CMD:-}"
+DEV_PIDS=()
+REQUIRED_ENVS=()
+
+# --- Helpers ---------------------------------------------------------------
+log()  { printf '[init.sh %s] INFO: %s\n' "$(date '+%H:%M:%S')" "$*" | tee -a "$LOG_FILE"; }
+fail() { printf '[init.sh %s] FAIL: %s\n' "$(date '+%H:%M:%S')" "$*" | tee -a "$LOG_FILE" >&2; exit 1; }
+have() { command -v "$1" >/dev/null 2>&1; }
+
+register_dev_pid() {
+  DEV_PIDS+=("$1")
+}
+
+cleanup_dev_pids() {
+  local pid
+  for pid in "${DEV_PIDS[@]+"${DEV_PIDS[@]}"}"; do
+    kill "$pid" 2>/dev/null || true
+  done
+  if have docker; then
+    docker compose -f "${PROJECT_ROOT}/docker-compose.yml" down 2>/dev/null || true
+    docker compose -f "${PROJECT_ROOT}/compose.yml" down 2>/dev/null || true
+    docker stop "$(basename "$PROJECT_ROOT")-dev" 2>/dev/null || true
+  fi
+}
+
+# --- Pre-flight ------------------------------------------------------------
+preflight() {
+  log "preflight: cwd=$PROJECT_ROOT tech_stack=$TECH_STACK"
+  [[ -d "$PROJECT_ROOT/.git" ]] || log "warn: not a git repo (ok if intentional)"
+  check_required_envs
+}
+
+check_required_envs() {
+  if [[ ${#REQUIRED_ENVS[@]} -eq 0 ]]; then
+    return 0
+  fi
+  local missing=()
+  local var
+  for var in "${REQUIRED_ENVS[@]}"; do
+    if [[ -z "${!var:-}" ]]; then
+      missing+=("$var")
+    fi
+  done
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    fail "missing required env vars: ${missing[*]}"
+  fi
+  log "env vars OK"
+}
+
+# --- Branches --------------------------------------------------------------
+start_node() {
+  cd "${PROJECT_ROOT}" || fail "cannot cd to ${PROJECT_ROOT}"
+  local pm
+  if [[ -f "${PROJECT_ROOT}/bun.lockb" ]]; then
+    pm="bun"
+  elif [[ -f "${PROJECT_ROOT}/pnpm-lock.yaml" ]]; then
+    pm="pnpm"
+  elif [[ -f "${PROJECT_ROOT}/yarn.lock" ]]; then
+    pm="yarn"
+  else
+    pm="npm"
+  fi
+  log "node: package manager=$pm"
+  have "$pm" || fail "$pm not installed"
+  "$pm" install --silent || fail "$pm install failed"
+  local dev_cmd="${DEV_CMD:-$pm run dev}"
+  log "starting dev server: $dev_cmd (background)"
+  # shellcheck disable=SC2086
+  PORT="${PORT}" bash -c "$dev_cmd" >"${PROJECT_ROOT}/.claude-init.dev.log" 2>&1 &
+  register_dev_pid "$!"
+}
+
+resolve_python_dev_cmd() {
+  if [[ -n "${DEV_CMD:-}" ]]; then
+    printf '%s' "$DEV_CMD"
+    return 0
+  fi
+  if [[ -f "${PROJECT_ROOT}/pyproject.toml" ]] && \
+     awk '
+       /^\[project\.scripts\]/ { in_scripts = 1; next }
+       /^\[/                   { in_scripts = 0 }
+       in_scripts && /^[[:space:]]*dev[[:space:]]*=/ { found = 1; exit }
+       END { exit !found }
+     ' "${PROJECT_ROOT}/pyproject.toml"; then
+    printf 'uv run dev'
+    return 0
+  fi
+  local deps_blob=""
+  [[ -f "${PROJECT_ROOT}/pyproject.toml" ]] && deps_blob+="$(cat "${PROJECT_ROOT}/pyproject.toml")"
+  [[ -f "${PROJECT_ROOT}/requirements.txt" ]] && deps_blob+="$(cat "${PROJECT_ROOT}/requirements.txt")"
+  if printf '%s' "$deps_blob" | grep -qiE '(^|[^a-z])fastapi([^a-z]|$)'; then
+    if [[ -f "${PROJECT_ROOT}/app/main.py" ]]; then
+      printf 'uv run uvicorn app.main:app --reload --host 0.0.0.0 --port %s' "$PORT"
+    elif [[ -f "${PROJECT_ROOT}/main.py" ]]; then
+      printf 'uv run uvicorn main:app --reload --host 0.0.0.0 --port %s' "$PORT"
+    else
+      fail "fastapi detected but no app/main.py or main.py entrypoint"
+    fi
+    return 0
+  fi
+  if printf '%s' "$deps_blob" | grep -qiE '(^|[^a-z])flask([^a-z]|$)'; then
+    if [[ -f "${PROJECT_ROOT}/app.py" ]]; then
+      printf 'uv run flask --app app run --debug --host 0.0.0.0 --port %s' "$PORT"
+    else
+      fail "flask detected but no app.py entrypoint"
+    fi
+    return 0
+  fi
+  if printf '%s' "$deps_blob" | grep -qiE '(^|[^a-z])django([^a-z]|$)'; then
+    [[ -f "${PROJECT_ROOT}/manage.py" ]] || fail "django detected but no manage.py"
+    printf 'uv run python manage.py runserver 0.0.0.0:%s' "$PORT"
+    return 0
+  fi
+  fail "no dev command detected; set DEV_CMD env or define [project.scripts] dev in pyproject.toml"
+}
+
+start_python() {
+  cd "${PROJECT_ROOT}" || fail "cannot cd to ${PROJECT_ROOT}"
+  have uv || fail "uv not installed (required by this script's Python branch)"
+  [[ -d "${PROJECT_ROOT}/.venv" ]] || uv venv
+  if [[ -f "${PROJECT_ROOT}/pyproject.toml" ]]; then
+    uv sync || fail "uv sync failed (check lockfile / pyproject.toml)"
+  elif [[ -f "${PROJECT_ROOT}/requirements.txt" ]]; then
+    uv pip install -r "${PROJECT_ROOT}/requirements.txt" || fail "uv pip install failed"
+  fi
+  local dev_cmd
+  dev_cmd="$(resolve_python_dev_cmd)"
+  log "starting dev server: $dev_cmd (background)"
+  # shellcheck disable=SC2086
+  bash -c "$dev_cmd" >"${PROJECT_ROOT}/.claude-init.dev.log" 2>&1 &
+  register_dev_pid "$!"
+}
+
+start_docker() {
+  cd "${PROJECT_ROOT}" || fail "cannot cd to ${PROJECT_ROOT}"
+  have docker || fail "docker not installed"
+  if [[ -f "${PROJECT_ROOT}/docker-compose.yml" || -f "${PROJECT_ROOT}/compose.yml" ]]; then
+    docker compose up -d --wait || fail "docker compose up failed"
+  elif [[ -f "${PROJECT_ROOT}/Dockerfile" ]]; then
+    local img_name
+    img_name="$(basename "$PROJECT_ROOT"):dev"
+    docker build -t "$img_name" "$PROJECT_ROOT" || fail "docker build failed"
+    docker run -d --rm -p "${PORT}:${PORT}" \
+      --name "$(basename "$PROJECT_ROOT")-dev" \
+      -e "PORT=${PORT}" \
+      "$img_name" || fail "docker run failed"
+  else
+    fail "no Dockerfile or compose file found"
+  fi
+}
+
+# --- Smoke Checks ----------------------------------------------------------
+smoke_http() {
+  log "smoke: HTTP 200 on $HEALTH_URL"
+  local i status
+  status="000"
+  for i in $(seq 1 30); do
+    status=$(curl -s -o /dev/null -w '%{http_code}' "$HEALTH_URL" || echo "000")
+    if [[ "$status" == "200" ]]; then
+      log "smoke: HTTP 200 OK (after ${i}s)"
+      return 0
+    fi
+    sleep 1
+  done
+  fail "smoke: HTTP 200 not reached within 30s (last=$status)"
+}
+
+smoke_db() {
+  if [[ -z "$DB_CHECK_CMD" ]]; then
+    log "smoke: DB check skipped (DB_CHECK_CMD empty)"
+    return 0
+  fi
+  log "smoke: DB check via: $DB_CHECK_CMD"
+  bash -c "$DB_CHECK_CMD" || fail "smoke: DB check failed"
+  log "smoke: DB OK"
+}
+
+# --- Main ------------------------------------------------------------------
+main() {
+  cd "${PROJECT_ROOT}" || fail "cannot cd to ${PROJECT_ROOT}"
+  : > "$LOG_FILE"
+  trap cleanup_dev_pids EXIT
+  preflight
+  case "$TECH_STACK" in
+    node)
+      start_node
+      ;;
+    python)
+      start_python
+      ;;
+    docker)
+      start_docker
+      ;;
+    *)
+      fail "unknown TECH_STACK: $TECH_STACK (expected node|python|docker)"
+      ;;
+  esac
+  smoke_http
+  smoke_db
+  log "init.sh OK"
+}
+
+main "$@"

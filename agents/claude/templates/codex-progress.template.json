@@ -1,0 +1,27 @@
+{
+  "$schema": "Codex CLI Progress Tracker",
+  "project": "<PROJECT_NAME>",
+  "created_at": "<YYYY-MM-DD>",
+  "updated_at": "<YYYY-MM-DD>",
+  "features": [
+    {
+      "id": "F001",
+      "name": "<Feature Name>",
+      "status": "pending",
+      "description": "<What this feature does>",
+      "files": [],
+      "tests": [],
+      "verification_steps": [
+        "<Step 1: How to verify this feature works>"
+      ],
+      "notes": ""
+    }
+  ],
+  "status_legend": {
+    "pending": "Not started",
+    "in_progress": "Currently being implemented",
+    "done": "Implemented and verified",
+    "blocked": "Cannot proceed - needs resolution",
+    "failed": "Implementation attempted but failed"
+  }
+}
