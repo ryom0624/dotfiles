@@ -40,7 +40,12 @@ git submodule update --init --recursive
 3. `tools/fzf/install --bin` で fzf バイナリをインストール
 4. `~/.local/bin/fzf` → `tools/fzf/bin/fzf` のシンボリックリンクを作成
 5. `.zshrc` `.zprofile` `.vim` `.vimrc` `.tmux.conf` を `$HOME` へシンボリックリンク
-6. `~/.config/herdr/config.toml` → `config/herdr/config.toml` のシンボリックリンクを作成（既存の通常ファイルは `.bak.YYYYMMDDHHMMSS` へバックアップ、再実行は冪等）
+6. `_safe_link` 関数で以下の設定を安全にリンク（既存の通常ファイルは `.bak.YYYYMMDDHHMMSS` へバックアップ、再実行は冪等）
+   - `~/.config/herdr/config.toml` → `config/herdr/config.toml`
+   - `~/.gitconfig` → `config/git/config`
+   - `~/Library/Application Support/Cursor/User/settings.json` → `config/cursor/settings.json`
+   - `~/Library/Application Support/Cursor/User/keybindings.json` → `config/cursor/keybindings.json`
+   - `~/.config/karabiner/karabiner.json` → `config/karabiner/karabiner.json`
 
 ---
 
@@ -55,8 +60,15 @@ dotfiles/
 ├── .vim/                # Vim ディレクトリ
 ├── .tmux.conf           # tmux 設定
 ├── config/
-│   └── herdr/
-│       └── config.toml  # Herdr 設定（~/.config/herdr/config.toml へリンク）
+│   ├── cursor/
+│   │   ├── settings.json    # Cursor エディタ設定（JSONC）
+│   │   └── keybindings.json # Cursor キーバインド
+│   ├── git/
+│   │   └── config           # Git グローバル設定（~/.gitconfig へリンク）
+│   ├── herdr/
+│   │   └── config.toml      # Herdr 設定（~/.config/herdr/config.toml へリンク）
+│   └── karabiner/
+│       └── karabiner.json   # Karabiner-Elements 設定
 ├── zsh/
 │   ├── plugins.zsh      # プラグイン読み込み設定
 │   └── plugins/
@@ -66,6 +78,23 @@ dotfiles/
 └── tools/
     └── fzf/             # fzf 本体（サブモジュール）
 ```
+
+---
+
+## 管理対象ファイル一覧
+
+| dotfiles 内パス | リンク先 | 備考 |
+|----------------|---------|------|
+| `.zshrc` | `~/.zshrc` | zsh メイン設定 |
+| `.zprofile` | `~/.zprofile` | ログインシェル設定 |
+| `.vimrc` | `~/.vimrc` | Vim 設定 |
+| `.vim/` | `~/.vim/` | Vim ディレクトリ |
+| `.tmux.conf` | `~/.tmux.conf` | tmux 設定 |
+| `config/git/config` | `~/.gitconfig` | Git グローバル設定 |
+| `config/cursor/settings.json` | `~/Library/Application Support/Cursor/User/settings.json` | JSONC 形式 |
+| `config/cursor/keybindings.json` | `~/Library/Application Support/Cursor/User/keybindings.json` | Cursor キーバインド |
+| `config/karabiner/karabiner.json` | `~/.config/karabiner/karabiner.json` | Karabiner-Elements 設定 |
+| `config/herdr/config.toml` | `~/.config/herdr/config.toml` | Herdr 設定 |
 
 ---
 
@@ -163,7 +192,6 @@ Git サブモジュールで管理され、`zsh/plugins.zsh` により compinit 
 |------|----|------|
 | `[ui] agent_panel_sort` | `"priority"` | エージェントパネルを注意待ち順で表示 |
 | `[experimental] pane_history` | `false` | サーバー再起動後のペイン履歴を保持しない |
-
 
 ---
 

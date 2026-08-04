@@ -1,0 +1,188 @@
+{
+    "workbench.editor.wrapTabs": true,
+    "editor.accessibilitySupport": "off",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "never"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.fontSize": 13,
+    "editor.fontLigatures": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.renderWhitespace": "all",
+    "editor.renderControlCharacters": true,
+    "editor.suggestSelection": "first",
+    "emmet.triggerExpansionOnTab": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        // "vue"
+    ],
+    "explorer.confirmDelete": false,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": false,
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/.nvm/**": true,
+        "**/.goevm/**": true,
+        "**/.android/**": true,
+        "**/.cache/**": true,
+        "**/.cargo/**": true,
+        "**/.gradle/**": true,
+        "**/.google-cloud-sdk/**": true,
+        "**/node_modules/**": true,
+        "**/Library/**": true,
+        "**/GoogleDrive/**": true,
+        "**/.mypy_cache/**": true,
+        "**/__pycache__/**": true,
+    },
+    "git.suggestSmartCommit": false,
+    "jupyter.debugJustMyCode": false,
+    "python.autoComplete.extraPaths": [
+        "~/.pyenv/versions/3.9.13/lib/python3.9/site-packages/"
+    ],
+    "python.autoComplete.addBrackets": true,
+    "python.autoComplete.preloadModules": [
+        "numpy",
+        "pandas",
+        "sklean",
+        "matplotlib"
+    ],
+    "python.condaPath": "~/.pyenv/versions/miniforge3/envs/python39",
+    "python.jediEnabled": false,
+    "python.languageServer": "None",
+    "python.linting.flake8Args": [
+        "max-line-length=100"
+    ],
+    "python.linting.flake8CategorySeverity.E": "Warning",
+    "python.linting.flake8CategorySeverity.F": "Warning",
+    "python.linting.flake8Path": "~/.pyenv/shims/flake8",
+    "python.linting.mypyArgs": [
+        "--follow-imports=skip",
+        "--ignore-missing-imports",
+        "--disallow-untyped-defs",
+        "--disallow-untyped-calls",
+        "--warn-return-any",
+        "--no-implicit-optional"
+    ],
+    "python.linting.mypyCategorySeverity.error": "Information",
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": "~/.pyenv/shims/mypy",
+    "python.linting.pylintArgs": [
+        "--ignored-modules=numpy,cv2,matplotlib",
+        "--ignored-classes=numpy,cv2,matplotlib",
+        "--extension-pkg-whitelist=numpy,cv2,matplotlib"
+    ],
+    "python.sortImports.path": "~/.pyenv/shims/isort",
+    "python.defaultInterpreterPath": "~/.pyenv/versions/miniforge3/bin/python",
+    "terminal.integrated.env.osx": {
+      "FIG_NEW_SESSION": "1",
+      "Q_NEW_SESSION": "1",
+      "PYTHONPATH": "${workspaceFolder}/backend"
+    },
+    "terminal.integrated.inheritEnv": false,
+    "terminal.integrated.scrollback": 10000000,
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.settings.enableNaturalLanguageSearch": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "[html]": {
+        "editor.formatOnSave": false
+    },
+    "terminal.integrated.allowChords": false,
+    "indentRainbow.indicatorStyle": "light",
+    "indentRainbow.ignoreErrorLanguages": [
+        "markdown"
+    ],
+    "vscodeGoogleTranslate.preferredLanguage": "Japanese",
+    "vscodeGoogleTranslate.HoverTranslations": true,
+    "search.useIgnoreFiles": false,
+    "files.associations": {
+        "*.json": "jsonc"
+    },
+    "python.analysis.autoImportCompletions": true,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+        "editor.formatOnType": true,
+        "editor.tabSize": 4
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "Vue.volar",
+        "editor.tabSize": 2
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[typescript]": {
+        "editor.tabSize": 2
+    },
+    "[markdown]": {
+        "editor.trimAutoWhitespace": false,
+        "editor.formatOnSave": false,
+    },
+    "prettier.printWidth": 150,
+    "editor.tabSize": 2,
+    "editor.minimap.enabled": false,
+    "editor.inlineSuggest.enabled": true,
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "editor.inlayHints.enabled": "off",
+// インデント、アクティブタブ、ステータスバーのカラー指定
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#1073cf2d",
+        "editor.lineHighlightBorder": "#9fced11f",
+        "editorIndentGuide.background1": "#cb997e",
+        "editorIndentGuide.background2": "#ddbea9",
+        "editorIndentGuide.background3": "#ffe8d6",
+        "editorIndentGuide.background4": "#b7b7a4",
+        "editorIndentGuide.background5": "#a5a58d",
+        "editorIndentGuide.background6": "#6b705c",
+        "editorIndentGuide.activeBackground1": "#06d6a0",
+        "editorIndentGuide.activeBackground2": "#06d6a0",
+        "editorIndentGuide.activeBackground3": "#06d6a0",
+        "editorIndentGuide.activeBackground4": "#06d6a0",
+        "editorIndentGuide.activeBackground5": "#06d6a0",
+        "editorIndentGuide.activeBackground6": "#06d6a0",
+        "tab.activeBackground": "#7442ad",
+        "tab.activeForeground": "#d3d2d4",
+        "statusBar.background": "#53208c"
+    },
+    "editor.wordWrap": "off",
+    "diffEditor.wordWrap": "off",
+    "editor.guides.indentation": false,
+    "editor.guides.bracketPairs": false,
+    "emmet.includeLanguages": {
+        "ejs": "html",
+        "javascript": "javascriptreact",
+        "astro": "html"
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "git.openRepositoryInParentFolders": "never",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.mypy_cache": true
+    },
+    "workbench.colorTheme": "Default Dark Modern",
+    "indentRainbow.colors": [
+        "rgba(255,255,64,0.3)",
+        "rgba(127,255,127,0.4)",
+        "rgba(255,127,255,0.5)",
+        "rgba(79,236,236,0.6)"
+    ],
+    "cursor.cpp.disabledLanguages": [
+        "scminput",
+        "plaintext"
+    ],
+    "editor.largeFileOptimizations": false,
+    "workbench.activityBar.orientation": "vertical",
+    "git.confirmSync": false,
+    "notebook.output.scrolling": true,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "cursor.cmdk.autoSelect": false,
+}

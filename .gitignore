@@ -1,1 +1,18 @@
 .vim/.netrwhist
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# バックアップファイル
+*.bak.*
+*.bak_*
+
+# その他
+*.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+__pycache__/
+*.pyc
+node_modules/
